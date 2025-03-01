@@ -181,9 +181,6 @@ fix_miniupmpd() {
     fi
 }
 
-#修改UPnP 菜单名
-sed -i "s/UPnP IGD & PCP\/NAT-PMP/UPnP/g" feeds/luci/applications/luci-app-upnp/root/usr/share/luci/menu.d/luci-app-upnp.json
-
 change_dnsmasq2full() {
     if ! grep -q "dnsmasq-full" $BUILD_DIR/include/target.mk; then
         sed -i 's/dnsmasq/dnsmasq-full/g' ./include/target.mk
