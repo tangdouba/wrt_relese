@@ -461,9 +461,17 @@ update_nss_diag() {
 }
 
 update_menu_location() {
-    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
-    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
-        sed -i 's/nas/services/g' "$samba4_path"
+    #local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+    #if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
+        #sed -i 's/nas/services/g' "$samba4_path"
+    #fi
+    local homeproxy_path="$BUILD_DIR/feeds/small8/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json"
+    if [ -d "$(dirname "$homeproxy_path")" ] && [ -f "$homeproxy_path" ]; then
+        sed -i 's/\services/vpn/g' "$homeproxy_path"
+    fi
+    local openclash_path="$BUILD_DIR/feeds/small8/luci-app-openclash/luasrc/controller/openclash.lua"
+    if [ -d "$(dirname "$openclash_path")" ] && [ -f "$openclash_path" ]; then
+        sed -i 's/\services/vpn/g' "$openclash_path"
     fi
 }
 
