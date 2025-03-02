@@ -577,6 +577,16 @@ EOF
     fi
 }
 
+fix_LibWrt_to_OpenWrt() {
+    # 只处理LibWrt
+    if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk; $BUILD_DIR/package/base-files/files/bin/config_generate; $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh; $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc"; then
+        sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
+        sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -614,6 +624,7 @@ main() {
     # update_lucky
     add_backup_info_to_sysupgrade
     optimize_smartDNS
+    fix_LibWrt_to_OpenWrt
     install_feeds
     update_package "small8/sing-box"
     update_script_priority
