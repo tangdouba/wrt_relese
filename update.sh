@@ -586,13 +586,13 @@ fix_LibWrt_to_OpenWrt() {
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
         sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
-    if [[ -d $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+    if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
         sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
-    if [[ -d $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+    if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
     fi
-	if [[ -d $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+    if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
     fi
 }
