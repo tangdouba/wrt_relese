@@ -577,16 +577,6 @@ EOF
     fi
 }
 
-fix_LibWrt_to_OpenWrt() {
-    # 只处理LibWrt
-    if ! grep -q "LiBwrt" "/include/version.mk; /package/base-files/files/bin/config_generate; /target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh; /package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc"; then
-        sed -i 's/\LiBwrt/OpenWrt/g' /include/version.mk
-        sed -i 's/LibWrt/Openwrt/g' /package/base-files/files/bin/config_generate
-        sed -i 's/LiBwrt/OpenWrt/g' /target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
-        sed -i 's/LiBwrt/OpenWrt/g' /package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-    fi
-}
-
 main() {
     clone_repo
     clean_up
