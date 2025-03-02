@@ -628,7 +628,7 @@ main() {
     set_build_signature
     fix_compile_vlmcsd
     update_nss_diag
-    update_menu_location
+    # update_menu_location
     fix_compile_coremark
     update_dnsmasq_conf
     # update_lucky
