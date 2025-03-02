@@ -614,7 +614,6 @@ main() {
     # update_lucky
     add_backup_info_to_sysupgrade
     optimize_smartDNS
-    fix_LibWrt_to_OpenWrt
     install_feeds
     update_package "small8/sing-box"
     update_script_priority
