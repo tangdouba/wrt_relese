@@ -595,7 +595,7 @@ fix_LibWrt_to_OpenWrt() {
         sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
-        sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
     if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
@@ -633,7 +633,7 @@ main() {
     update_pw_ha_chk
     install_opkg_distfeeds
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     fix_compile_vlmcsd
     update_nss_diag
     update_menu_location
