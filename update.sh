@@ -467,11 +467,15 @@ update_menu_location() {
     #fi
     local homeproxy_path="$BUILD_DIR/feeds/small8/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json"
     local openclash_path="$BUILD_DIR/feeds/small8/luci-app-openclash/luasrc/controller/openclash.lua"
+    local qbittorrent_path="$BUILD_DIR/feeds/luci/applications/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
     if [ -d "$(dirname "$homeproxy_path")" ] && [ -f "$homeproxy_path" ]; then
         sed -i 's/\services/vpn/g' "$homeproxy_path"
     fi
     if [ -d "$(dirname "$openclash_path")" ] && [ -f "$openclash_path" ]; then
         sed -i 's/\services/vpn/g' "$openclash_path"
+    fi
+    if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
+        sed -i 's/\services/nas/g' "$qbittorrent_path"
     fi
 }
 
