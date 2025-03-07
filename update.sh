@@ -606,7 +606,6 @@ update_mosdns_deconfig() {
 
 change_name() {
     cd $BUILD_DIR
-    # 只处理libwrt
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
