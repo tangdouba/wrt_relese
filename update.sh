@@ -462,18 +462,6 @@ update_nss_diag() {
     fi
 }
 
-update_menu_location() {
-    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
-    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
-        sed -i 's/nas/services/g' "$samba4_path"
-    fi
-
-    local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
-    if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
-        sed -i 's/services/vpn/g' "$tailscale_path"
-    fi
-}
-
 fix_compile_coremark() {
     local file="$BUILD_DIR/feeds/packages/utils/coremark/Makefile"
     if [ -d "$(dirname "$file")" ] && [ -f "$file" ]; then
@@ -488,6 +476,35 @@ update_homeproxy() {
     if [ -d "$target_dir" ]; then
         rm -rf "$target_dir"
         git clone "$repo_url" "$target_dir"
+    fi
+}
+
+update_openclash() {
+    local repo_branch="master"
+    local repo_url="https://github.com/vernesong/OpenClash.git"
+    local target_dir="$BUILD_DIR/feeds/small8/luci-app-openclash"
+    local target_new_dir="$BUILD_DIR/feeds/small8/openclash"
+
+    if [ -d "$target_dir" ]; then
+        rm -rf "$target_dir"
+        git clone "$repo_branch" "$repo_url" "$target_new_dir"
+    fi
+}
+
+update_menu_location() {
+    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
+        sed -i 's/nas/services/g' "$samba4_path"
+    fi
+
+    local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
+    if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
+        sed -i 's/services/vpn/g' "$tailscale_path"
+    fi
+
+    local homeproxy_path="$BUILD_DIR/feeds/small8/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json"
+    if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
+        sed -i 's/\services/vpn/g' "$tailscale_path"
     fi
 }
 
