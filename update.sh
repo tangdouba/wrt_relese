@@ -484,11 +484,10 @@ update_openclash() {
     local repo_branch="master"
     local repo_url="https://github.com/vernesong/OpenClash.git"
     local target_dir="$BUILD_DIR/feeds/small8/luci-app-openclash"
-    local target_new_dir="$BUILD_DIR/feeds/small8/openclash"
 
     if [ -d "$target_dir" ]; then
         rm -rf "$target_dir"
-        git clone "$repo_branch" "$repo_url" "$target_new_dir"
+        git clone "$repo_branch" "$repo_url" "$target_dir"
     fi
 }
 
