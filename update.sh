@@ -134,7 +134,7 @@ install_small8() {
         adguardhome luci-app-adguardhome ddns-go luci-app-ddns-go taskd luci-lib-xterm luci-lib-taskd \
         luci-app-store quickstart luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest \
         luci-theme-argon netdata luci-app-netdata lucky luci-app-lucky luci-app-openclash luci-app-homeproxy \
-        luci-app-amlogic nikki luci-app-nikki tailscale luci-app-tailscale
+        luci-app-amlogic nikki luci-app-nikki tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf
 }
 
 install_feeds() {
@@ -591,6 +591,25 @@ update_mosdns_deconfig() {
     fi
 }
 
+change_hostname() {
+    # 只处理libwrt
+    if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
+        return
+    cd $BUILD_DIR
+    if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+    fi
+    if [[ -f $BUILD_DIR/include/version.mk ]]; then
+        sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
+    fi
+	if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+    fi
+		if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -629,6 +648,7 @@ main() {
     add_backup_info_to_sysupgrade
     optimize_smartDNS
     update_mosdns_deconfig
+    change_hostname
     install_feeds
     update_package "small8/sing-box"
     update_script_priority
