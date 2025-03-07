@@ -608,7 +608,6 @@ change_hostname() {
     # 只处理libwrt
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
-	
     cd $BUILD_DIR
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
         sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
