@@ -487,7 +487,7 @@ update_openclash() {
 
     if [ -d "$openclash_dir" ]; then
         rm -rf "$openclash_dir"
-        git clone "$openclash_branch" "$openclash_url" "$openclash_dir"
+        git clone --depth 1 -b "$openclash_branch" "$openclash_url" "$openclash_dir"
     fi
 }
 
