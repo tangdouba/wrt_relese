@@ -604,7 +604,7 @@ update_mosdns_deconfig() {
     fi
 }
 
-change_name() {
+change_up() {
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
     cd $BUILD_DIR
