@@ -503,8 +503,13 @@ update_menu_location() {
     fi
 
     local homeproxy_path="$BUILD_DIR/feeds/small8/luci-app-homeproxy/root/usr/share/luci/menu.d/luci-app-homeproxy.json"
-    if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
-        sed -i 's/\services/vpn/g' "$tailscale_path"
+    if [ -d "$(dirname "$homeproxy_path")" ] && [ -f "$homeproxy_path" ]; then
+        sed -i 's/\services/vpn/g' "$homeproxy_path"
+    fi
+
+    local usbprinter_path="$BUILD_DIR/feeds/luci/applications/luci-app-usb-printer/luasrc/controller/usb_printer.lua"
+    if [ -d "$(dirname "$usbprinter_path")" ] && [ -f "$usbprinter_path" ]; then
+        sed -i 's/\nas/services/g' "$usbprinter_path"
     fi
 }
 
