@@ -663,7 +663,7 @@ main() {
     add_backup_info_to_sysupgrade
     optimize_smartDNS
     update_mosdns_deconfig
-    change_name
+    fix_up
     install_feeds
     update_package "small8/sing-box"
     update_script_priority
