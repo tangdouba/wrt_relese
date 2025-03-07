@@ -17,7 +17,7 @@ configure_wifi() {
 set wireless.radio${radio}.channel="${channel}"
 set wireless.radio${radio}.htmode="${htmode}"
 set wireless.radio${radio}.mu_beamformer='1'
-set wireless.radio${radio}.country='US'
+set wireless.radio${radio}.country='CN'
 set wireless.radio${radio}.txpower="${txpower}"
 set wireless.radio${radio}.cell_density='0'
 set wireless.radio${radio}.disabled='0'
@@ -64,6 +64,16 @@ redmi_ax6_wifi_cfg() {
     configure_wifi 1 1 HE20 21 'Redmi_AX6' '12345678'
 }
 
+cmiot_ax18_wifi_cfg() {
+    configure_wifi 0 149 HE80 25 'ImmortalWrt_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'ImmortalWrt_2.4G' '12345678'
+}
+
+zn_m2_wifi_cfg() {
+    configure_wifi 0 149 HE80 25 'ImmortalWrt_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'ImmortalWrt_2.4G' '12345678'
+}
+
 case "${board_name}" in
 jdcloud,ax1800-pro | \
     jdcloud,re-ss-01)
@@ -86,6 +96,12 @@ cmcc,rax3000m)
 redmi,ax6 | \
     redmi,ax6-stock)
     redmi_ax6_wifi_cfg
+    ;;
+cmiot,ax18 | \
+    cmiot_ax18_wifi_cfg
+    ;;
+zn,m2 | \
+    zn_m2_wifi_cfg
     ;;
 *)
     exit 0
