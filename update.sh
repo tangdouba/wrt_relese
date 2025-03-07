@@ -597,9 +597,17 @@ EOF
     fi
 }
 
+update_mosdns_deconfig() {
+    local mosdns_conf="$BUILD_DIR/feeds/small8/luci-app-mosdns/root/etc/config/mosdns"
+    if [ -d "${mosdns_conf%/*}" ] && [ -f "$mosdns_conf" ]; then
+        sed -i 's/8000/300/g' "$mosdns_conf"
+    fi
+}
+
 fix_up() {
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
+    fi
     cd $BUILD_DIR
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
         sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
@@ -612,13 +620,6 @@ fix_up() {
     fi
     if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
-    fi
-}
-
-update_mosdns_deconfig() {
-    local mosdns_conf="$BUILD_DIR/feeds/small8/luci-app-mosdns/root/etc/config/mosdns"
-    if [ -d "${mosdns_conf%/*}" ] && [ -f "$mosdns_conf" ]; then
-        sed -i 's/8000/300/g' "$mosdns_conf"
     fi
 }
 
