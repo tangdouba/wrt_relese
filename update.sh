@@ -481,13 +481,13 @@ update_homeproxy() {
 }
 
 update_openclash() {
-    local repo_branch="master"
-    local repo_url="https://github.com/vernesong/OpenClash.git"
-    local target_dir="$BUILD_DIR/feeds/small8/luci-app-openclash"
+    local openclash_branch="master"
+    local openclash_url="https://github.com/vernesong/OpenClash.git"
+    local openclash_dir="$BUILD_DIR/feeds/small8/luci-app-openclash"
 
-    if [ -d "$target_dir" ]; then
-        rm -rf "$target_dir"
-        git clone "$repo_branch" "$repo_url" "$target_dir"
+    if [ -d "$openclash_dir" ]; then
+        rm -rf "$openclash_dir"
+        git clone "$openclash_branch" "$openclash_url" "$openclash_dir"
     fi
 }
 
