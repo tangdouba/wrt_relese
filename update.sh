@@ -73,6 +73,12 @@ update_feeds() {
         touch "$BUILD_DIR/include/bpf.mk"
     fi
 
+  # 切换nss-packages源
+     #if grep -q "nss_packages" "$BUILD_DIR/$FEEDS_CONF"; then
+     #    sed -i '/nss_packages/d' "$BUILD_DIR/$FEEDS_CONF"
+     #    echo "src-git nss_packages https://github.com/ZqinKing/nss-packages.git" >>"$BUILD_DIR/$FEEDS_CONF"
+     #fi
+     
     # 更新 feeds
     ./scripts/feeds clean
     ./scripts/feeds update -a
@@ -609,6 +615,16 @@ update_mosdns_deconfig() {
     fi
 }
 
+fix_quickstart() {
+     local qs_index_path="$BUILD_DIR/feeds/small8/luci-app-quickstart/htdocs/luci-static/quickstart/index.js"
+     local fix_path="$BASE_PATH/patches/quickstart_index.js"
+     if [ -f "$qs_index_path" ] && [ -f "$fix_path" ]; then
+         cat "$fix_path" >"$qs_index_path"
+     else
+         echo "Quickstart index.js 或补丁文件不存在，请检查路径是否正确。"
+     fi
+ }
+
 fix_up() {
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
@@ -668,6 +684,7 @@ main() {
     add_backup_info_to_sysupgrade
     optimize_smartDNS
     update_mosdns_deconfig
+    fix_quickstart
     fix_up
     install_feeds
     update_package "small8/sing-box"
