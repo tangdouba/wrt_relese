@@ -699,7 +699,7 @@ main() {
     update_openclash
     update_menu_location
     update_dnsmasq_conf
-    presetset_homeproxy_resources
+    # presetset_homeproxy_resources
     # update_lucky
     add_backup_info_to_sysupgrade
     optimize_smartDNS
