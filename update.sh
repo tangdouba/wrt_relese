@@ -522,25 +522,6 @@ update_dnsmasq_conf() {
     fi
 }
 
-presetset_homeproxy_resources() {
-#预置HomeProxy数据
-    local hp_rule="$BUILD_DIR/package/surge"
-    local hp_path="$BUILD_DIR/feeds/small8/luci-app-homeproxy/root/etc/homeproxy/resources"
-    if [ -d "$(dirname "$hp_path")" ]; then
-        rm -rf "$hp_path/*"
-		
-	git clone -q --depth=1 --single-branch --branch "release" "https://github.com/Loyalsoldier/surge-rules.git" "$hp_rule"
-	cd "$hp_rule" && res_ver=$(git log -1 --pretty=format:'%s' | grep -o "[0-9]*")
-
-	echo $res_ver | tee china_ip4.ver china_ip6.ver china_list.ver gfw_list.ver
-	awk -F, '/^IP-CIDR,/{print $2 > "china_ip4.txt"} /^IP-CIDR6,/{print $2 > "china_ip6.txt"}' cncidr.txt
-	sed 's/^\.//g' direct.txt > china_list.txt ; sed 's/^\.//g' gfw.txt > gfw_list.txt
-	mv -f ./{china_*,gfw_list}.{ver,txt} "$hp_path"
-
-	cd .. && rm -rf "$hp_rule"
-    fi
-}
-
 # 更新版本
 update_package() {
     local dir="$BUILD_DIR/feeds/$1"
@@ -699,7 +680,6 @@ main() {
     update_openclash
     update_menu_location
     update_dnsmasq_conf
-    # presetset_homeproxy_resources
     # update_lucky
     add_backup_info_to_sysupgrade
     optimize_smartDNS
