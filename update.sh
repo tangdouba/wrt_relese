@@ -625,6 +625,23 @@ fix_quickstart() {
      fi
  }
 
+update_oaf_deconfig() {
+    local conf_path="$BUILD_DIR/feeds/small8/open-app-filter/files/appfilter.config"
+    local uci_def="$BUILD_DIR/feeds/small8/luci-app-oaf/root/etc/uci-defaults/94_feature_3.0"
+
+    if [ -d "${conf_path%/*}" ] && [ -f "$conf_path" ]; then
+        sed -i \
+            -e "s/record_enable '1'/record_enable '0'/g" \
+            -e "s/disable_hnat '1'/disable_hnat '0'/g" \
+            -e "s/auto_load_engine '1'/auto_load_engine '0'/g" \
+            "$conf_path"
+    fi
+
+    if [ -d "${uci_def%/*}" ] && [ -f "$uci_def" ]; then
+        sed -i '/\(disable_hnat\|auto_load_engine\)/d' "$uci_def"
+    fi
+}
+
 fix_up() {
     if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
         return
@@ -685,6 +702,7 @@ main() {
     optimize_smartDNS
     update_mosdns_deconfig
     fix_quickstart
+    update_oaf_deconfig
     fix_up
     install_feeds
     update_package "small8/sing-box"
