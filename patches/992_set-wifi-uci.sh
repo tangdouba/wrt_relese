@@ -98,9 +98,11 @@ redmi,ax6 | \
     redmi_ax6_wifi_cfg
     ;;
 cmiot,ax18 | \
+    cmiot,ax18)
     cmiot_ax18_wifi_cfg
     ;;
 zn,m2 | \
+    zn,m2)
     zn_m2_wifi_cfg
     ;;
 *)
