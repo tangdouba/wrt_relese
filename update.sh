@@ -465,10 +465,10 @@ update_nss_diag() {
 }
 
 update_menu_location() {
-    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
-    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
-        sed -i 's/nas/services/g' "$samba4_path"
-    fi
+    #local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+    #if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
+        #sed -i 's/nas/services/g' "$samba4_path"
+    #fi
 
     local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
     if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
