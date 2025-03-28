@@ -489,7 +489,7 @@ update_menu_location() {
 
     local qbittorrent_path="$BUILD_DIR/feeds/luci/applications/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
     if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
-        sed -i 's/services/nas/g' "$qbittorrent_path"
+        sed -i 's/\/services\//\/nas\//g' "$qbittorrent_path"
     fi
     
 }
