@@ -65,13 +65,13 @@ redmi_ax6_wifi_cfg() {
 }
 
 cmiot_ax18_wifi_cfg() {
-    configure_wifi 0 149 HE80 25 'ImmortalWrt_5G' '12345678'
-    configure_wifi 1 1 HE20 20 'ImmortalWrt_2.4G' '12345678'
+    configure_wifi 0 149 HE80 25 'CMIOT_AX18_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'CMIOT_AX18_2.4G' '12345678'
 }
 
 zn_m2_wifi_cfg() {
-    configure_wifi 0 149 HE80 25 'ImmortalWrt_5G' '12345678'
-    configure_wifi 1 1 HE20 20 'ImmortalWrt_2.4G' '12345678'
+    configure_wifi 0 149 HE80 25 'ZN_M2_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'ZN_M2_2.4G' '12345678'
 }
 
 case "${board_name}" in
