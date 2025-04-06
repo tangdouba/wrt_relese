@@ -785,7 +785,7 @@ main() {
     install_feeds
     support_fw4_adg
     update_script_priority
-    # update_proxy_app_menu_location
+    update_proxy_app_menu_location
     # update_dns_app_menu_location
     fix_libwrt_to_openwrt
 }
