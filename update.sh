@@ -24,7 +24,7 @@ FEEDS_CONF="feeds.conf.default"
 GOLANG_REPO="https://github.com/sbwml/packages_lang_golang"
 GOLANG_BRANCH="24.x"
 THEME_SET="argon"
-LAN_ADDR="192.168.1.1"
+LAN_ADDR="192.168.10.1"
 
 clone_repo() {
     if [[ ! -d $BUILD_DIR ]]; then
@@ -471,14 +471,19 @@ update_nss_diag() {
 }
 
 update_menu_location() {
-    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
-    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
-        sed -i 's/nas/services/g' "$samba4_path"
-    fi
+    #local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+    #if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
+    #    sed -i 's/nas/services/g' "$samba4_path"
+    #fi
 
     local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
     if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
         sed -i 's/services/vpn/g' "$tailscale_path"
+    fi
+
+    local qbittorrent_path="$BUILD_DIR/feeds/luci/applications/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
+    if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
+        sed -i 's/\/services\//\/nas\//g' "$qbittorrent_path"
     fi
 }
 
@@ -717,6 +722,26 @@ update_dns_app_menu_location() {
     fi
 }
 
+fix_libwrt_to_openwrt() {
+    cd $BUILD_DIR
+	# 只处理LibWrt
+    if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
+	  return
+    fi
+    if [[ -f $BUILD_DIR/include/version.mk ]]; then
+        sed -i 's/\/LiBwrt\//\/OpenWrt\//g' $BUILD_DIR/include/version.mk
+    fi
+    if [[ -d $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+        sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+    fi
+    if [[ -d $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+    fi
+	if [[ -d $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -743,7 +768,7 @@ main() {
     update_pw
     install_opkg_distfeeds
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     fix_compile_vlmcsd
     update_nss_diag
     update_menu_location
@@ -761,6 +786,7 @@ main() {
     update_script_priority
     # update_proxy_app_menu_location
     # update_dns_app_menu_location
+    fix_libwrt_to_openwrt
 }
 
 main "$@"
