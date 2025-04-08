@@ -730,7 +730,7 @@ fix_libwrt_to_openwrt() {
 	  return
     fi
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
-        sed -i 's/\/LiBwrt\//\/OpenWrt\//g' $BUILD_DIR/include/version.mk
+        sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
     if [[ -d $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
         sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
@@ -785,8 +785,8 @@ main() {
     install_feeds
     support_fw4_adg
     update_script_priority
-    update_proxy_app_menu_location
-    update_dns_app_menu_location
+    # update_proxy_app_menu_location
+    # update_dns_app_menu_location
     fix_libwrt_to_openwrt
 }
 
