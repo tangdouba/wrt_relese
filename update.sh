@@ -482,9 +482,9 @@ update_menu_location() {
         sed -i 's/services/vpn/g' "$tailscale_path"
     fi
 
-    local qbittorrent_path="$BUILD_DIR/feeds/small8/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
+    local qbittorrent_path="$BUILD_DIR/package/luci-app-qbittorrent/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
     if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
-        sed -i 's/\/services\//\/nas\//g' "$qbittorrent_path"
+        sed -i 's/services/nas/g' "$qbittorrent_path"
     fi
 }
 
@@ -673,6 +673,13 @@ add_gecoosac() {
     # 删除旧的目录（如果存在）
     rm -rf "$gecoosac_dir" 2>/dev/null
     git clone --depth 1 https://github.com/lwb1978/openwrt-gecoosac.git "$gecoosac_dir"
+}
+
+add_qbittorrent() {
+    local qbittorrent_dir="$BUILD_DIR/package/luci-app-qbittorrent"
+    # 删除旧的目录（如果存在）
+    rm -rf "$qbittorrent_dir" 2>/dev/null
+    git clone --depth 1 https://github.com/sbwml/luci-app-qbittorrent.git "$qbittorrent_dir"
 }
 
 update_proxy_app_menu_location() {
