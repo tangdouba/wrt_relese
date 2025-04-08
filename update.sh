@@ -675,13 +675,6 @@ add_gecoosac() {
     git clone --depth 1 https://github.com/lwb1978/openwrt-gecoosac.git "$gecoosac_dir"
 }
 
-add_qbittorrent() {
-    local qbittorrent_dir="$BUILD_DIR/package/luci-app-qbittorrent"
-    # 删除旧的目录（如果存在）
-    rm -rf "$qbittorrent_dir" 2>/dev/null
-    git clone --depth 1 https://github.com/sbwml/luci-app-qbittorrent.git "$qbittorrent_dir"
-}
-
 update_proxy_app_menu_location() {
     # passwall
     local passwall_path="$BUILD_DIR/package/feeds/small8/luci-app-passwall/luasrc/controller/passwall.lua"
@@ -737,10 +730,10 @@ fix_libwrt_to_openwrt() {
 	  return
     fi
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
-        sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
+        sed -i 's/\/LiBwrt\//\/OpenWrt\//g' $BUILD_DIR/include/version.mk
     fi
     if [[ -d $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
-        sed -i 's/LibWrt/Openwrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
     if [[ -d $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
