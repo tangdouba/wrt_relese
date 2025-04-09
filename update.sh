@@ -733,7 +733,7 @@ fix_libwrt_to_openwrt() {
         sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
     if [[ -d $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
-        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i "s/hostname='.*'/hostname='OpenWrt'/g" $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
     if [[ -d $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
         sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
