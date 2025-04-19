@@ -191,7 +191,7 @@ fix_default_set() {
             \cp -f "$BASE_PATH/patches/tempinfo" "$BUILD_DIR/package/emortal/autocore/files/tempinfo"
         fi
 
-     if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
         if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
             \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
         fi
