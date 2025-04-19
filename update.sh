@@ -184,18 +184,18 @@ fix_default_set() {
         find "$BUILD_DIR/feeds/small8/luci-theme-argon" -type f -name "cascade*" -exec sed -i 's/--bar-bg/--primary/g' {} \;
     fi
 
+    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
+        fi
+    fi
+
     install -Dm755 "$BASE_PATH/patches/99_set_argon_primary" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/99_set_argon_primary"
 
     if [ -f "$BUILD_DIR/package/emortal/autocore/files/tempinfo" ]; then
         if [ -f "$BASE_PATH/patches/tempinfo" ]; then
             \cp -f "$BASE_PATH/patches/tempinfo" "$BUILD_DIR/package/emortal/autocore/files/tempinfo"
         fi
-
-    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
-        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
-            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
-        fi
-    fi
 }
 
 fix_miniupnpd() {
