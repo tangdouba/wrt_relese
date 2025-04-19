@@ -197,6 +197,7 @@ fix_default_set() {
         if [ -f "$BASE_PATH/patches/tempinfo" ]; then
             \cp -f "$BASE_PATH/patches/tempinfo" "$BUILD_DIR/package/emortal/autocore/files/tempinfo"
         fi
+    fi	
 }
 
 fix_miniupnpd() {
