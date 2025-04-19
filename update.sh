@@ -3,6 +3,7 @@
 set -e
 set -o errexit
 set -o errtrace
+set +o posix
 
 # 定义错误处理函数
 error_handler() {
