@@ -191,6 +191,7 @@ fix_default_set() {
     fi
 
     install -Dm755 "$BASE_PATH/patches/99_set_argon_primary" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/99_set_argon_primary"
+    install -Dm755 "$BASE_PATH/patches/991_set_nf_conntrack_max" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/991_set_nf_conntrack_max"
 
     if [ -f "$BUILD_DIR/package/emortal/autocore/files/tempinfo" ]; then
         if [ -f "$BASE_PATH/patches/tempinfo" ]; then
@@ -749,6 +750,33 @@ fix_libwrt_to_openwrt() {
     fi
 }
 
+fix_easytier() {
+    local easytier_path="$BUILD_DIR/package/feeds/small8/luci-app-easytier/luasrc/model/cbi/easytier.lua"
+    if [ -d "${easytier_path%/*}" ] && [ -f "$easytier_path" ]; then
+        sed -i 's/util/xml/g' "$easytier_path"
+    fi
+}
+
+update_geoip() {
+    local geodata_path="$BUILD_DIR/package/feeds/small8/v2ray-geodata/Makefile"
+    if [ -d "${geodata_path%/*}" ] && [ -f "$geodata_path" ]; then
+        local GEOIP_VER=$(awk -F"=" '/GEOIP_VER:=/ {print $NF}' $geodata_path | grep -oE "[0-9]{1,}")
+        if [ -n "$GEOIP_VER" ]; then
+            local base_url="https://github.com/v2fly/geoip/releases/download/${GEOIP_VER}"
+            # 下载旧的geoip.dat和新的geoip-only-cn-private.dat文件的校验和
+            local old_SHA256=$(wget -qO- "$base_url/geoip.dat.sha256sum" | awk '{print $1}')
+            local new_SHA256=$(wget -qO- "$base_url/geoip-only-cn-private.dat.sha256sum" | awk '{print $1}')
+            # 更新Makefile中的文件名和校验和
+            if [ -n "$old_SHA256" ] && [ -n "$new_SHA256" ]; then
+                if grep -q "$old_SHA256" "$geodata_path"; then
+                    sed -i "s|=geoip.dat|=geoip-only-cn-private.dat|g" "$geodata_path"
+                    sed -i "s/$old_SHA256/$new_SHA256/g" "$geodata_path"
+                fi
+            fi
+        fi
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -794,6 +822,8 @@ main() {
     # update_proxy_app_menu_location
     # update_dns_app_menu_location
     fix_libwrt_to_openwrt
+    fix_easytier
+    update_geoip
 }
 
 main "$@"
