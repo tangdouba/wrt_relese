@@ -733,20 +733,20 @@ update_dns_app_menu_location() {
 fix_libwrt_to_openwrt() {
     cd $BUILD_DIR
 	# 只处理LibWrt
-    if ! grep -q "LiBwrt" "$BUILD_DIR/include/version.mk"; then
+    if ! grep -q "LibWRT" "$BUILD_DIR/include/version.mk"; then
 	  return
     fi
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
-        sed -i 's/\LiBwrt/OpenWrt/g' $BUILD_DIR/include/version.mk
+        sed -i 's/\LibWRT/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
-        sed -i "s/LibWrt/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i "s/LibWRT/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
     if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
-        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
     fi
     if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
-        sed -i 's/LiBwrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
     fi
 }
 
