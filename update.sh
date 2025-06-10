@@ -828,6 +828,11 @@ fix_libwrt_to_openwrt() {
     if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
         sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
     fi
+    if [ -f "$BUILD_DIR/package/base-files/files/etc/banner" ]; then
+        if [ -f "$BASE_PATH/patches/banner" ]; then
+            \cp -f "$BASE_PATH/patches/banner" "$BUILD_DIR/package/base-files/files/etc/banner"
+        fi
+    fi
 }
 
 main() {
