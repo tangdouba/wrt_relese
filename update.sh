@@ -91,6 +91,7 @@ remove_unwanted_packages() {
         "luci-app-ssr-plus" "luci-app-vssr" "luci-theme-argon" "luci-app-daed" "luci-app-dae"
         "luci-app-alist" "luci-app-argon-config" "luci-app-homeproxy" "luci-app-haproxy-tcp"
         "luci-app-openclash" "luci-app-mihomo" "luci-app-appfilter" "luci-app-msd_lite"
+        "luci-app-qbittorrent"
     )
     local packages_net=(
         "haproxy" "xray-core" "xray-plugin" "dns2socks" "alist" "hysteria"
@@ -98,7 +99,7 @@ remove_unwanted_packages() {
         "sing-box" "v2ray-core" "v2ray-geodata" "v2ray-plugin" "tuic-client"
         "chinadns-ng" "ipt2socks" "tcping" "trojan-plus" "simple-obfs"
         "shadowsocksr-libev" "dae" "daed" "mihomo" "geoview" "tailscale" "open-app-filter"
-        "msd_lite"
+        "msd_lite" "qBittorrent-Enhanced-Edition"
     )
     local packages_utils=(
         "cups"
@@ -165,7 +166,8 @@ install_small8() {
         luci-app-store quickstart luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest \
         luci-theme-argon netdata luci-app-netdata lucky luci-app-lucky luci-app-openclash luci-app-homeproxy \
         luci-app-amlogic nikki luci-app-nikki tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf \
-        easytier luci-app-easytier msd_lite luci-app-msd_lite cups luci-app-cupsd
+        easytier luci-app-easytier msd_lite luci-app-msd_lite cups luci-app-cupsd qbittorrent luci-app-qbittorrent \
+        luci-app-argon-config
 }
 
 install_feeds() {
@@ -191,6 +193,12 @@ fix_default_set() {
 
     if [ -d "$BUILD_DIR/feeds/small8/luci-theme-argon" ]; then
         find "$BUILD_DIR/feeds/small8/luci-theme-argon" -type f -name "cascade*" -exec sed -i 's/--bar-bg/--primary/g' {} \;
+    fi
+
+    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
+        fi
     fi
 
     install -Dm755 "$BASE_PATH/patches/990_set_argon_primary" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/990_set_argon_primary"
@@ -480,14 +488,19 @@ update_nss_diag() {
 }
 
 update_menu_location() {
-    local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
-    if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
-        sed -i 's/nas/services/g' "$samba4_path"
-    fi
+    #local samba4_path="$BUILD_DIR/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json"
+    #if [ -d "$(dirname "$samba4_path")" ] && [ -f "$samba4_path" ]; then
+        #sed -i 's/nas/services/g' "$samba4_path"
+    #fi
 
     local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
     if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
         sed -i 's/services/vpn/g' "$tailscale_path"
+    fi
+
+    local qbittorrent_path="$BUILD_DIR/feeds/small8/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
+    if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
+        sed -i 's/services/nas/g' "$qbittorrent_path"
     fi
 }
 
@@ -797,6 +810,26 @@ update_smartdns_luci() {
     fi
 }
 
+fix_libwrt_to_openwrt() {
+    cd $BUILD_DIR
+	# 只处理LibWrt
+    if ! grep -q "LibWRT" "$BUILD_DIR/include/version.mk"; then
+	  return
+    fi
+    if [[ -f $BUILD_DIR/include/version.mk ]]; then
+        sed -i 's/\LibWRT/OpenWrt/g' $BUILD_DIR/include/version.mk
+    fi
+    if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+        sed -i "s/LibWRT/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
+    fi
+    if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+    fi
+    if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -823,7 +856,7 @@ main() {
     update_pw
     install_opkg_distfeeds
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     fix_compile_vlmcsd
     update_nss_diag
     update_menu_location
@@ -851,6 +884,7 @@ main() {
     # update_package "xray-core"
     # update_proxy_app_menu_location
     # update_dns_app_menu_location
+    fix_libwrt_to_openwrt
 }
 
 main "$@"
