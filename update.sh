@@ -171,7 +171,8 @@ install_small8() {
         luci-app-quickstart luci-app-istorex luci-app-cloudflarespeedtest netdata luci-app-netdata \
         lucky luci-app-lucky luci-app-openclash luci-app-homeproxy luci-app-amlogic nikki luci-app-nikki \
         tailscale luci-app-tailscale oaf open-app-filter luci-app-oaf easytier luci-app-easytier \
-        msd_lite luci-app-msd_lite cups luci-app-cupsd
+        msd_lite luci-app-msd_lite cups luci-app-cupsd qbittorrent luci-app-qbittorrent \
+        luci-app-argon-config
 }
 
 install_fullconenat() {
@@ -202,6 +203,12 @@ fix_default_set() {
     # 修改默认主题
     if [ -d "$BUILD_DIR/feeds/luci/collections/" ]; then
         find "$BUILD_DIR/feeds/luci/collections/" -type f -name "Makefile" -exec sed -i "s/luci-theme-bootstrap/luci-theme-$THEME_SET/g" {} \;
+    fi
+
+    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
+        fi
     fi
 
     install -Dm755 "$BASE_PATH/patches/990_set_argon_primary" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/990_set_argon_primary"
@@ -520,6 +527,11 @@ update_menu_location() {
     local tailscale_path="$BUILD_DIR/feeds/small8/luci-app-tailscale/root/usr/share/luci/menu.d/luci-app-tailscale.json"
     if [ -d "$(dirname "$tailscale_path")" ] && [ -f "$tailscale_path" ]; then
         sed -i 's/services/vpn/g' "$tailscale_path"
+    fi
+
+    local qbittorrent_path="$BUILD_DIR/feeds/small8/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
+    if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
+        sed -i 's/services/nas/g' "$qbittorrent_path"
     fi
 }
 
@@ -973,6 +985,31 @@ update_argon() {
     echo "luci-theme-argon 更新完成"
 }
 
+fix_libwrt_to_openwrt() {
+    cd $BUILD_DIR
+	# 只处理LibWrt
+    if ! grep -q "LibWRT" "$BUILD_DIR/include/version.mk"; then
+	  return
+    fi
+    if [[ -f $BUILD_DIR/include/version.mk ]]; then
+        sed -i 's/\LibWRT/OpenWrt/g' $BUILD_DIR/include/version.mk
+    fi
+    if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+        sed -i "s/LibWRT/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
+    fi
+    if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+    fi
+    if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+    if [ -f "$BUILD_DIR/package/base-files/files/etc/banner" ]; then
+        if [ -f "$BASE_PATH/patches/banner" ]; then
+            \cp -f "$BASE_PATH/patches/banner" "$BUILD_DIR/package/base-files/files/etc/banner"
+        fi
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -999,7 +1036,7 @@ main() {
     apply_passwall_tweaks
     install_opkg_distfeeds
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     update_nss_diag
     update_menu_location
     fix_compile_coremark
@@ -1028,6 +1065,7 @@ main() {
     update_package "docker" "tags" "v28.2.2"
     update_package "dockerd" "releases" "v28.2.2"
     apply_hash_fixes # 调用哈希修正函数
+    fix_libwrt_to_openwrt
 }
 
 main "$@"
