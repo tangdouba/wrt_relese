@@ -529,10 +529,10 @@ update_menu_location() {
         sed -i 's/services/vpn/g' "$tailscale_path"
     fi
 
-    local qbittorrent_path="$BUILD_DIR/feeds/small8/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
-    if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
-        sed -i 's/services/nas/g' "$qbittorrent_path"
-    fi
+    # local qbittorrent_path="$BUILD_DIR/feeds/small8/luci-app-qbittorrent/root/usr/share/luci/menu.d/luci-app-qbittorrent.json"
+    # if [ -d "$(dirname "$qbittorrent_path")" ] && [ -f "$qbittorrent_path" ]; then
+    #     sed -i 's/services/nas/g' "$qbittorrent_path"
+    # fi
 }
 
 fix_compile_coremark() {
