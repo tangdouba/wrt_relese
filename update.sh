@@ -992,16 +992,16 @@ fix_libwrt_to_openwrt() {
 	  return
     fi
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
-        sed -i 's/\LibWRT/OpenWrt/g' $BUILD_DIR/include/version.mk
+        sed -i 's/\LibWrt/OpenWrt/g' $BUILD_DIR/include/version.mk
     fi
     if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
-        sed -i "s/LibWRT/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
+        sed -i "s/LibWrt/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
     fi
     if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
-        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
     fi
     if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
-        sed -i 's/LibWRT/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
     fi
     if [ -f "$BUILD_DIR/package/base-files/files/etc/banner" ]; then
         if [ -f "$BASE_PATH/patches/banner" ]; then
