@@ -205,12 +205,6 @@ fix_default_set() {
         find "$BUILD_DIR/feeds/luci/collections/" -type f -name "Makefile" -exec sed -i "s/luci-theme-bootstrap/luci-theme-$THEME_SET/g" {} \;
     fi
 
-    if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
-        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
-            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
-        fi
-    fi
-
     install -Dm755 "$BASE_PATH/patches/990_set_argon_primary" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/990_set_argon_primary"
     install -Dm755 "$BASE_PATH/patches/991_custom_settings" "$BUILD_DIR/package/base-files/files/etc/uci-defaults/991_custom_settings"
 
@@ -988,7 +982,7 @@ update_argon() {
 fix_libwrt_to_openwrt() {
     cd $BUILD_DIR
 	# 只处理LibWrt
-    if ! grep -q "LibWRT" "$BUILD_DIR/include/version.mk"; then
+    if ! grep -q "LibWrt" "$BUILD_DIR/include/version.mk"; then
 	  return
     fi
     if [[ -f $BUILD_DIR/include/version.mk ]]; then
@@ -1006,6 +1000,11 @@ fix_libwrt_to_openwrt() {
     if [ -f "$BUILD_DIR/package/base-files/files/etc/banner" ]; then
         if [ -f "$BASE_PATH/patches/banner" ]; then
             \cp -f "$BASE_PATH/patches/banner" "$BUILD_DIR/package/base-files/files/etc/banner"
+        fi
+    fi
+	if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
         fi
     fi
 }
