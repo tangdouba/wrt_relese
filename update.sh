@@ -1002,9 +1002,9 @@ fix_libwrt_to_openwrt() {
             \cp -f "$BASE_PATH/patches/banner" "$BUILD_DIR/package/base-files/files/etc/banner"
         fi
     fi
-	if [ -f "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+	if [ -f "$BUILD_DIR/feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
         if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
-            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/small8/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
         fi
     fi
 }
