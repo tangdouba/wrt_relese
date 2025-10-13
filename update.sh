@@ -38,7 +38,7 @@ FEEDS_CONF="feeds.conf.default"
 GOLANG_REPO="https://github.com/sbwml/packages_lang_golang"
 GOLANG_BRANCH="25.x"
 THEME_SET="argon"
-LAN_ADDR="192.168.1.1"
+LAN_ADDR="192.168.10.1"
 
 clone_repo() {
     if [[ ! -d $BUILD_DIR ]]; then
@@ -990,6 +990,36 @@ fix_easytier_lua() {
     fi
 }
 
+fix_libwrt_to_openwrt() {
+    cd $BUILD_DIR
+	# 只处理LibWrt
+    if ! grep -q "LibWrt" "$BUILD_DIR/include/version.mk"; then
+	  return
+    fi
+    if [[ -f $BUILD_DIR/include/version.mk ]]; then
+        sed -i 's/\LibWrt/OpenWrt/g' $BUILD_DIR/include/version.mk
+    fi
+    if [[ -f $BUILD_DIR/package/base-files/files/bin/config_generate ]]; then
+        sed -i "s/LibWrt/OpenWrt/g" $BUILD_DIR/package/base-files/files/bin/config_generate
+    fi
+    if [[ -f $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh ]]; then
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/target/linux/qualcommax/base-files/etc/uci-defaults/990_set-wireless.sh
+    fi
+    if [[ -f $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ]]; then
+        sed -i 's/LibWrt/OpenWrt/g' $BUILD_DIR/package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+    fi
+    if [ -f "$BUILD_DIR/package/base-files/files/etc/banner" ]; then
+        if [ -f "$BASE_PATH/patches/banner" ]; then
+            \cp -f "$BASE_PATH/patches/banner" "$BUILD_DIR/package/base-files/files/etc/banner"
+        fi
+    fi
+	if [ -f "$BUILD_DIR/feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg" ]; then
+        if [ -f "$BASE_PATH/patches/bg1.jpg" ]; then
+            \cp -f "$BASE_PATH/patches/bg1.jpg" "$BUILD_DIR/feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg"
+        fi
+    fi
+}
+
 main() {
     clone_repo
     clean_up
@@ -1016,7 +1046,7 @@ main() {
     apply_passwall_tweaks
     install_opkg_distfeeds
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     update_nss_diag
     update_menu_location
     fix_compile_coremark
@@ -1045,6 +1075,7 @@ main() {
     update_package "docker" "tags" "v28.2.2"
     update_package "dockerd" "releases" "v28.2.2"
     apply_hash_fixes # 调用哈希修正函数
+    fix_libwrt_to_openwrt
 }
 
 main "$@"
