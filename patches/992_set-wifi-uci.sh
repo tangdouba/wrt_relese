@@ -83,6 +83,16 @@ gemtek_w1701k_wifi_cfg() {
     uci set wireless.radio2.disabled='1'
 }
 
+cmiot_ax18_wifi_cfg() {
+    configure_wifi 0 149 HE80 20 'CMIOT_AX18_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'CMIOT_AX18_2.4G' '12345678'
+}
+
+zn_m2_wifi_cfg() {
+    configure_wifi 0 149 HE80 20 'ZN_M2_5G' '12345678'
+    configure_wifi 1 1 HE20 20 'ZN_M2_2.4G' '12345678'
+}
+
 case "${board_name}" in
 jdcloud,ax1800-pro | \
 	jdcloud,re-ss-01)
@@ -117,6 +127,14 @@ linksys,mx4200v1 | \
 gemtek,w1701k)
 	gemtek_w1701k_wifi_cfg
 	;;
+cmiot,ax18 | \
+    cmiot,ax18)
+    cmiot_ax18_wifi_cfg
+    ;;
+zn,m2 | \
+    zn,m2)
+    zn_m2_wifi_cfg
+    ;;	
 *)
 	exit 0
 	;;
