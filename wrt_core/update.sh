@@ -58,7 +58,7 @@ main() {
     set_custom_task
     apply_passwall_tweaks
     update_nss_pbuf_performance
-    set_build_signature
+    # set_build_signature
     update_nss_diag
     update_menu_location
     fix_compile_coremark
